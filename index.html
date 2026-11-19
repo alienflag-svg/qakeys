@@ -7,11 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Груз. раскладка">
+<meta name="apple-mobile-web-app-title" content="Georgian layout">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<title>Раскладка: Грузинская / Армянская</title>
+<title>Layout: Georgian / Armenian</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; }
@@ -66,24 +66,24 @@
 </head>
 <body>
 
-<h1>Экранная раскладка</h1>
+<h1>Screen layout</h1>
 
-<textarea id="input" placeholder="Начните вводить латинские буквы..." autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+<textarea id="input" placeholder="Start typing in Latin..." autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
 
 <div class="buttons">
   <select id="layoutSelect">
-    <option value="georgian">Грузинская</option>
-    <option value="armenian">Армянская</option>
+    <option value="georgian">Georgian</option>
+    <option value="armenian">Armenian</option>
   </select>
-  <button id="toggleBtn" type="button">Раскладка: ВКЛ</button>
-  <button id="clearBtn" type="button">Очистить</button>
-  <button id="copyBtn" type="button">Копировать</button>
+  <button id="toggleBtn" type="button">Layout: OFF</button>
+  <button id="clearBtn" type="button">Clear</button>
+  <button id="copyBtn" type="button">Copy</button>
 </div>
 
 <div class="status" id="status"></div>
 
 <div class="hint">
-  Набирайте латиницей — буквы преобразуются в выбранный язык.
+  Type in Latin - letters convert to a choisen layout.
 </div>
 
 <script>
@@ -166,15 +166,15 @@ function applyState() {
 
 function updateToggleUI() {
   if (layoutEnabled) {
-    toggleBtn.textContent = 'Раскладка: ВКЛ';
+    toggleBtn.textContent = 'Layout: ON';
     toggleBtn.classList.remove('off');
     input.classList.remove('disabled');
-    input.placeholder = 'Начните вводить латинские буквы...';
+    input.placeholder = 'Start typing in Latin...';
   } else {
-    toggleBtn.textContent = 'Раскладка: ВЫКЛ';
+    toggleBtn.textContent = 'Layout: OFF';
     toggleBtn.classList.add('off');
     input.classList.add('disabled');
-    input.placeholder = 'Раскладка отключена — ввод латиницей.';
+    input.placeholder = 'Layout's off.';
   }
 }
 
@@ -214,8 +214,8 @@ function insertAtCursor(text) {
 layoutSelect.addEventListener('change', () => {
   currentLayout = LAYOUTS[layoutSelect.value] || GEORGIAN_LAYOUT;
   saveLayoutName(layoutSelect.value);
-  const label = layoutSelect.value === 'armenian' ? 'армянскую' : 'грузинскую';
-  setStatus(`Раскладка переключена на ${label}.`);
+  const label = layoutSelect.value === 'armenian' ? 'Armenian' : 'Georgian';
+  setStatus(`layout is switched to ${label}.`);
   input.focus();
 });
 
@@ -223,31 +223,31 @@ toggleBtn.addEventListener('click', () => {
   layoutEnabled = !layoutEnabled;
   saveLayoutEnabled(layoutEnabled);
   updateToggleUI();
-  setStatus(layoutEnabled ? 'Раскладка включена.' : 'Раскладка отключена.');
+  setStatus(layoutEnabled ? 'layout ON.' : 'layout OFF.');
   input.focus();
 });
 
 clearBtn.addEventListener('click', () => {
   input.value = '';
   input.focus();
-  setStatus('Поле очищено.');
+  setStatus('Area cleared.');
 });
 
 copyBtn.addEventListener('click', async () => {
   if (!input.value) {
-    setStatus('Поле пустое — нечего копировать.');
+    setStatus('Empty area — nothing to copy.');
     return;
   }
   try {
     await navigator.clipboard.writeText(input.value);
-    setStatus('Текст скопирован в буфер обмена.');
+    setStatus('Text copied to clipboard.');
   } catch (err) {
     input.select();
     try {
       document.execCommand('copy');
-      setStatus('Текст скопирован (fallback).');
+      setStatus('Text copied (fallback).');
     } catch (e) {
-      setStatus('Не удалось скопировать: ' + err.message);
+      setStatus('Copy failed: ' + err.message);
     }
     const len = input.value.length;
     input.setSelectionRange(len, len);
@@ -270,8 +270,8 @@ input.focus();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('SW зарегистрирован'))
-      .catch((err) => console.log('SW ошибка:', err));
+      .then(() => console.log('SW registered'))
+      .catch((err) => console.log('SW error:', err));
   });
 }
 
